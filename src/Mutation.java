@@ -12,19 +12,19 @@ public class Mutation implements IMutation {
     @Override
     public IChromosome doMutation(IChromosome chromosome) {
         if (Configuration.instance.mutationType.equals(Displacement)) {
-            System.out.println("Displacement");
+            System.out.println("Mutation: Displacement");
             return doMutationDisplacement(chromosome);
         }else if(Configuration.instance.mutationType.equals(Exchange)){
-            System.out.println("Exchange");
+            System.out.println("Mutation: Exchange");
             return doMutationExchange(chromosome);
         }else if(Configuration.instance.mutationType.equals(Insertion)){
-            System.out.println("Insertion");
+            System.out.println("Mutation: Insertion");
             return doMutationInsertion(chromosome);
         }else if(Configuration.instance.mutationType.equals(Inversion)){
-            System.out.println("Inversion");
+            System.out.println("Mutation: Inversion");
             return doMutationInversion(chromosome);
         }else if(Configuration.instance.mutationType.equals(Scramble)) {
-            System.out.println("Scramble");
+            System.out.println("Mutation: Scramble");
             return doMutationScramble(chromosome);
         }
 
