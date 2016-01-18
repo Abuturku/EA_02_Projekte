@@ -70,7 +70,7 @@ public class Crossover implements ICrossover {
                 }
             }
 
-        }while (children[1]!=null);
+        } while ( numberOfHealthyChildren <2 );
 
         return children;
     }
@@ -111,7 +111,7 @@ public class Crossover implements ICrossover {
                 }
             }
 
-        } while (children[1]!=null);
+        } while ( numberOfHealthyChildren <2 );
 
         return children;
     }
@@ -171,13 +171,60 @@ public class Crossover implements ICrossover {
                 }
             }
 
-        } while (children[1]!=null);
+        } while ( numberOfHealthyChildren <2 );
 
         return children;
     }
 
     private IChromosome[] uniformCO(IChromosome parent1, IChromosome parent2){
         IChromosome[] children = new IChromosome[2];
+        float ratio = 100*Configuration.instance.mixingRation; //in Prozent
+        if(ratio<=0||ratio>=100){
+            throw new IllegalArgumentException( "The mixing ratio has to be a value between 0 and 1." );
+        }
+
+        char[] caParent1 = parent1.getChromosome().toCharArray();
+        char[] caParent2 = parent2.getChromosome().toCharArray();
+        char[] caChild1 = new char[149];
+        char[] caChild2 = new char[149];
+
+        int parent1Full = (int) (1.5*ratio);
+        int parent2Full = (int) (1.5*ratio);
+        int countParent1 = 0;
+        int countParent2 = 0;
+        char caFirstParent;
+        char caSecondParent;
+
+        int numberOfHealthyChildren = 0;
+        do{
+            for(int i=0 ; i < 149 ; i++){
+                int randNr = Configuration.instance.randomGenerator.nextInt(0,100);
+
+                if( countParent1<parent1Full && randNr <= ratio ){
+                    caChild1[i] = caParent1[i];
+                    caChild2[i] = caParent2[i];
+                }
+                else if( countParent2<parent2Full && randNr > ratio){
+                    caChild1[i] = caParent2[i];
+                    caChild2[i] = caParent1[i];
+                }
+            }
+
+            IChromosome child = new Chromosome( caChild1.toString() );
+            if (child.isValid()){
+                children[numberOfHealthyChildren]=child;
+                numberOfHealthyChildren++;
+            }
+
+            child = new Chromosome( caChild2.toString() );
+            if (numberOfHealthyChildren < 2){
+                if (child.isValid()){
+                    children[numberOfHealthyChildren]=child;
+                    numberOfHealthyChildren++;
+                }
+            }
+
+        } while ( numberOfHealthyChildren <2 );
 
         return children;
     }
