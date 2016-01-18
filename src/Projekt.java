@@ -7,7 +7,7 @@ public class Projekt implements IProjekt {
     private int fitness;
     private int number;
 
-    public Projekt (int cost, int fitness, int number){
+    public Projekt (int number, int cost, int fitness){
         this.cost = cost;
         this.fitness = fitness;
         this.number = number;
@@ -27,4 +27,7 @@ public class Projekt implements IProjekt {
     public int getNumber() {
         return this.number;
     }
+
+    @Override
+    public String toString(){ return "Number: " + this.number+ " Cost: "+this.cost + " Fitness: "+this.fitness;}
 }
