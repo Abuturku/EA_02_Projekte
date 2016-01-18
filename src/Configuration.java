@@ -3,6 +3,7 @@
  */
 public enum Configuration {
 
-    OnePoint,TwoPoint, KPoint, Uniform, Displacement, Exchange, Insertion, Inversion, Scramble, RoubletteWheel, Tournament;
+    instance;
+    final Enum mutationType = MutationEnum.Displacement;
 
 }
