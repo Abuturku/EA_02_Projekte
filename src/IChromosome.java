@@ -3,7 +3,7 @@
  */
 public interface IChromosome {
 
-    public String generateRandomChromosome();
+    public IChromosome generateRandomChromosome();
 
     public String getChromosome();
 
