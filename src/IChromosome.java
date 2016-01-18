@@ -11,4 +11,6 @@ public interface IChromosome {
 
     public int getFitness();
 
+    public int compareTo(IChromosome chromosome);
+
 }
