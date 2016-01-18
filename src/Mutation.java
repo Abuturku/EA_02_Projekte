@@ -28,6 +28,7 @@ public class Mutation implements IMutation {
             return doMutationScramble(chromosome);
         }
 
+        System.out.println("Incorrect ENUM Type");
         return null;
     }
 
