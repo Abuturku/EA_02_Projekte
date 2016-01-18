@@ -7,4 +7,10 @@ public interface IPopulation {
     //TODO Steps: Select - Crossover - Mutate
     //      generates a valid new generation
 
+    public IChromosome getFittest();
+
+    public Chromosome[] getPopulation();
+
+    int getSumPopulationFitness();
+
 }
