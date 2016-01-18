@@ -3,9 +3,9 @@
  */
 public class Crossover implements ICrossover {
 
-    public Chromosome[] doCrossover(Chromosome parent1, Chromosome parent2){
+    public IChromosome[] doCrossover(IChromosome parent1, IChromosome parent2){
 
-        Chromosome[] children = new Chromosome[2];
+        IChromosome[] children = new IChromosome[2];
         return children;
         //TODO
 

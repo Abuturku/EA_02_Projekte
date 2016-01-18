@@ -6,7 +6,7 @@ package Configuration;
 public enum Configuration {
 
     instance;
-    public Enum cossoverType = CrossoverEnum.KPoint;
+    public Enum crossoverType = CrossoverEnum.KPoint;
     public Enum mutationType = MutationEnum.Displacement;
     public Enum selectionType = SelectionEnum.RouletteWheel;
     public MersenneTwisterFast randomGenerator = new MersenneTwisterFast(System.nanoTime());
