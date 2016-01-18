@@ -1,20 +1,14 @@
+import java.util.Arrays;
+
 /**
  * Created by 9364290 on 18.01.16.
  */
 public class Population implements IPopulation {
 
-    private Chromosome[] actualPopulation;
+    private Chromosome[] population;
 
-    private Chromosome[] nextPopulation;
-
-    Population(Chromosome[] actualPopulation){
-        this.actualPopulation = actualPopulation;
-        this.nextPopulation = new Chromosome[actualPopulation.length];
-    }
-
-    @Override
-    public Chromosome[] getNextPopulation() {
-        return nextPopulation;
+    Population(Chromosome[] population){
+        this.population = population;
     }
 
     @Override
@@ -28,12 +22,17 @@ public class Population implements IPopulation {
     }
 
     @Override
-    public Chromosome[] getActualPopulation() {
-        return actualPopulation;
+    public Chromosome[] getPopulation() {
+        return population;
     }
 
     @Override
     public int getSumPopulationFitness() {
         return 0;
+    }
+
+    @Override
+    public void sortPopulation() {
+        Arrays.sort(population);
     }
 }
