@@ -26,7 +26,19 @@ public class Crossover implements ICrossover {
     }
 
     private IChromosome[] onePointCO(IChromosome parent1, IChromosome parent2){
+        IChromosome child;
         IChromosome[] children = new IChromosome[2];
+        int[] invalidCrossNumbers = new int[148];
+
+        do {
+            do{
+                int randomSplit = Configuration.instance.randomGenerator.nextInt(1,148);
+
+
+
+
+            }while (!child.isValid());
+        }while (children[1]!=null);
 
         return children;
     }
