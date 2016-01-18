@@ -45,9 +45,25 @@ public class Mutation implements IMutation {
     }
 
     private IChromosome doMutationInversion(IChromosome chromosome){
-        String chromosomeString = chromosome.getChromosome();
-        
-        return null;
+        StringBuilder chromosomeString = new StringBuilder(chromosome.getChromosome());
+        int start = Configuration.instance.randomGenerator.nextInt(chromosomeString.length());
+        int end = Configuration.instance.randomGenerator.nextInt(chromosomeString.length());
+
+        if(start>end){
+            int temp = start;
+            start = end;
+            end = temp;
+        }
+
+        System.out.println("Reverse chromosome: " + chromosomeString.toString());
+
+        StringBuilder toTurn = new StringBuilder(chromosomeString.substring(start,end));
+        toTurn.reverse();
+        chromosomeString.replace(start,end,toTurn.toString());
+
+        System.out.println("New chromosome: " + chromosomeString.toString());
+
+        return new Chromosome(chromosomeString.toString());
     }
 
     private IChromosome doMutationScramble(IChromosome chromosome){

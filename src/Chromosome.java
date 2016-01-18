@@ -6,6 +6,11 @@ public class Chromosome implements IChromosome {
 
     private int budget = 1500;
     private int length = 150;
+    private String chromosomeString;
+
+    public Chromosome(String chromosomeString){
+        this.chromosomeString = chromosomeString;
+    }
 
     public String getChromosome(){
         return null; //TODO
