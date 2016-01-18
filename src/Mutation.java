@@ -39,14 +39,8 @@ public class Mutation implements IMutation {
 
     private IChromosome doMutationDisplacement(IChromosome chromosome){
         StringBuilder chromosomeString = new StringBuilder(chromosome.getChromosome());
-        int start = Configuration.instance.randomGenerator.nextInt(chromosomeString.length());
-        int end = Configuration.instance.randomGenerator.nextInt(chromosomeString.length());
-
-        if(start>end){
-            int temp = start;
-            start = end;
-            end = temp;
-        }
+        int start = Configuration.instance.randomGenerator.nextInt(chromosomeString.length()/2);
+        int end = Configuration.instance.randomGenerator.nextInt(start,chromosomeString.length());
 
         System.out.println("Displace Chromosome: " + chromosomeString.toString());
 
@@ -120,14 +114,8 @@ public class Mutation implements IMutation {
 
     private IChromosome doMutationInversion(IChromosome chromosome){
         StringBuilder chromosomeString = new StringBuilder(chromosome.getChromosome());
-        int start = Configuration.instance.randomGenerator.nextInt(chromosomeString.length());
-        int end = Configuration.instance.randomGenerator.nextInt(chromosomeString.length());
-
-        if(start>end){
-            int temp = start;
-            start = end;
-            end = temp;
-        }
+        int start = Configuration.instance.randomGenerator.nextInt(chromosomeString.length()-2);
+        int end = Configuration.instance.randomGenerator.nextInt(start, chromosomeString.length());
 
         System.out.println("Reverse chromosome: " + chromosomeString.toString());
 
@@ -148,14 +136,8 @@ public class Mutation implements IMutation {
 
     private IChromosome doMutationScramble(IChromosome chromosome){
         StringBuilder chromosomeString = new StringBuilder(chromosome.getChromosome());
-        int start = Configuration.instance.randomGenerator.nextInt(chromosomeString.length());
-        int end = Configuration.instance.randomGenerator.nextInt(chromosomeString.length());
-
-        if(start>end){
-            int temp = start;
-            start = end;
-            end = temp;
-        }
+        int start = Configuration.instance.randomGenerator.nextInt(chromosomeString.length()-2);
+        int end = Configuration.instance.randomGenerator.nextInt(start,chromosomeString.length());
 
         System.out.println("Mix Chromosome: " + chromosomeString.toString());
 

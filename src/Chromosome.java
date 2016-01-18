@@ -13,7 +13,7 @@ public class Chromosome implements IChromosome {
     }
 
     @Override
-    public IChromosome generateRandomChromosome() {
+    public String generateRandomChromosome() {
         return null;
     }
 
