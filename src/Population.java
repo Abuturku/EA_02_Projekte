@@ -3,10 +3,18 @@
  */
 public class Population implements IPopulation {
 
-    private Chromosome[] population;
+    private Chromosome[] actualPopulation;
 
-    Population(Chromosome[] population){
-        this.population = population;
+    private Chromosome[] nextPopulation;
+
+    Population(Chromosome[] actualPopulation){
+        this.actualPopulation = actualPopulation;
+        this.nextPopulation = new Chromosome[actualPopulation.length];
+    }
+
+    @Override
+    public Chromosome[] getNextPopulation() {
+        return nextPopulation;
     }
 
     @Override
@@ -20,8 +28,8 @@ public class Population implements IPopulation {
     }
 
     @Override
-    public Chromosome[] getPopulation() {
-        return population;
+    public Chromosome[] getActualPopulation() {
+        return actualPopulation;
     }
 
     @Override
