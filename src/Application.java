@@ -10,17 +10,16 @@ import java.io.IOException;
 
 
 public class Application {
-    IProjekt[] projects = new Projekt[150];
+    public static final IProject[] PROJECTS = new Project[150];
 
 
     public static void main(String[] args) {
 
         Application obj = new Application();
-        obj.run();
 
     }
 
-    public void run() {
+    public Application() {
 
         String csvFile = "././data/projectData.csv";
         BufferedReader br = null;
@@ -37,16 +36,14 @@ public class Application {
                 line = line.substring(1,line.length()-1);
                 String[] project = line.split(cvsSplitBy);
 
-                    IProjekt tempProject= new Projekt(Integer.parseInt(project[0]), Integer.parseInt(project[1]), Integer.parseInt(project[2]));
+                    IProject tempProject= new Project(Integer.parseInt(project[0]), Integer.parseInt(project[1]), Integer.parseInt(project[2]));
                     System.out.println(tempProject.toString());
 
-                    projects[index] = tempProject;
+                    PROJECTS[index] = tempProject;
                     index++;
             }
 
 
-
-       // System.out.println(projects.toString());
 
 
 
@@ -65,6 +62,11 @@ public class Application {
         }
 
         System.out.println("Done");
+
+
+        System.out.println("Starte");
+
+
     }
 }
 
