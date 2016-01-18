@@ -26,18 +26,48 @@ public class Crossover implements ICrossover {
     }
 
     private IChromosome[] onePointCO(IChromosome parent1, IChromosome parent2){
-        IChromosome child;
         IChromosome[] children = new IChromosome[2];
-        int[] invalidCrossNumbers = new int[148];
+        int numberOfInvalidPos = 0;
+        int[] invalidCOPosition = new int[148];
+        int numberOfHealthyChildren = 0;
 
-        do {
-            do{
-                int randomSplit = Configuration.instance.randomGenerator.nextInt(1,148);
+        do{
+            int randomSplit;
+            if (numberOfInvalidPos == 0) {
+                randomSplit = Configuration.instance.randomGenerator.nextInt(1, 148);
+            }
+            else if(numberOfInvalidPos==148){
+                throw new IllegalStateException( "These parents can't have valid childs... sorry." );
+            }
+            else {
+                boolean tryAgain = false;
+                do {
+                    randomSplit = Configuration.instance.randomGenerator.nextInt(1, 148);
+                    for (int i = 0; i < numberOfInvalidPos; i++) {
+                        tryAgain = (invalidCOPosition[i] == randomSplit);
+                    }
+                } while (tryAgain);
+            }
+            //here is an untested Splitting Number!
+            //breed 1st child
+            IChromosome child = new Chromosome( parent1.getChromosome().substring(0,randomSplit).concat(
+                                                parent2.getChromosome().substring(randomSplit,149)      )
+                                              );
+            if (child.isValid()){
+                children[numberOfHealthyChildren]=child;
+                numberOfHealthyChildren++;
+            }
+            //breed 2nd child
+            IChromosome child = new Chromosome( parent2.getChromosome().substring(0,randomSplit).concat(
+                                                parent1.getChromosome().substring(randomSplit,149)      )
+                                              );
+            if (numberOfHealthyChildren < 2){
+                if (child.isValid()){
+                    children[numberOfHealthyChildren]=child;
+                    numberOfHealthyChildren++;
+                }
+            }
 
-
-
-
-            }while (!child.isValid());
         }while (children[1]!=null);
 
         return children;
