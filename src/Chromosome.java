@@ -31,12 +31,17 @@ public class Chromosome implements IChromosome {
     }
 
     private String getRandomChromosomeString(){
-        char[] characters = new char[length];
-        for(int index = 0; index < characters.length; index++){
-            characters[index]= (char) Configuration.instance.randomGenerator.nextInt(0,1);
+        StringBuilder characters = new StringBuilder();
+        for(int index = 0; index < this.length; index++){
+            if (Configuration.instance.randomGenerator.nextInt(0,100) < 80){
+                characters.append(0);
+            }else{
+                characters.append(1);
+            }
+
+
         }
-
-
+        System.out.println(characters.toString());
         return characters.toString();
     }
 

@@ -78,6 +78,7 @@ public class Application {
         System.out.println("Start");
 
         IPopulation population = generatePopulation();
+        IPopulation evolvedPopulation = population.evolve();
 
     }
 }

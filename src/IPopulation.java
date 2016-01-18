@@ -3,7 +3,7 @@
  */
 public interface IPopulation {
 
-    public void evolve();
+    public IPopulation evolve();
     //TODO Steps: Select - Crossover - Mutate
     //      generates a valid new generation
 
