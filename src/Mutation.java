@@ -45,6 +45,8 @@ public class Mutation implements IMutation {
     }
 
     private IChromosome doMutationInversion(IChromosome chromosome){
+        String chromosomeString = chromosome.getChromosome();
+        
         return null;
     }
 

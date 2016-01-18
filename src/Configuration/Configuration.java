@@ -9,5 +9,5 @@ public enum Configuration {
     public Enum cossoverType = CrossoverEnum.KPoint;
     public Enum mutationType = MutationEnum.Displacement;
     public Enum selectionType = SelectionEnum.RouletteWheel;
-    MersenneTwisterFast randomGenerator = new MersenneTwisterFast(System.nanoTime());
+    public MersenneTwisterFast randomGenerator = new MersenneTwisterFast(System.nanoTime());
 }
