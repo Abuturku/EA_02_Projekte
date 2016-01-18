@@ -1258,4 +1258,7 @@ public strictfp class MersenneTwisterFast extends Random implements Serializable
         if (!(j%3==2)) System.out.println();
 
     }
+    public int nextInt(int minimum,int maximum) {
+        return minimum + (int)(nextDouble() * ((maximum - minimum) + 1));
+    }
 }
