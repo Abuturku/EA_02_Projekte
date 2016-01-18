@@ -7,4 +7,5 @@ public interface IProjekt {
 
     public int getFitness();
 
+    public int getNumber();
 }

@@ -6,8 +6,8 @@ package Configuration;
 public enum Configuration {
 
     instance;
-    final Enum cossoverType = CrossoverEnum.KPoint;
-    final Enum mutationType = MutationEnum.Displacement;
-    final Enum selectionType = SelectionEnum.RouletteWheel;
+    public Enum cossoverType = CrossoverEnum.KPoint;
+    public Enum mutationType = MutationEnum.Displacement;
+    public Enum selectionType = SelectionEnum.RouletteWheel;
 
 }

@@ -5,10 +5,12 @@ public class Projekt implements IProjekt {
 
     private int cost;
     private int fitness;
+    private int number;
 
-    public Projekt (int cost, int fitness){
+    public Projekt (int cost, int fitness, int number){
         this.cost = cost;
         this.fitness = fitness;
+        this.number = number;
     }
 
     @Override
@@ -19,5 +21,10 @@ public class Projekt implements IProjekt {
     @Override
     public int getFitness() {
         return this.fitness;
+    }
+
+    @Override
+    public int getNumber() {
+        return this.number;
     }
 }
