@@ -11,25 +11,30 @@ public class Mutation implements IMutation {
 
     @Override
     public IChromosome doMutation(IChromosome chromosome) {
-        if (Configuration.instance.mutationType.equals(Displacement)) {
-            System.out.println("Mutation: Displacement");
-            return doMutationDisplacement(chromosome);
-        }else if(Configuration.instance.mutationType.equals(Exchange)){
-            System.out.println("Mutation: Exchange");
-            return doMutationExchange(chromosome);
-        }else if(Configuration.instance.mutationType.equals(Insertion)){
-            System.out.println("Mutation: Insertion");
-            return doMutationInsertion(chromosome);
-        }else if(Configuration.instance.mutationType.equals(Inversion)){
-            System.out.println("Mutation: Inversion");
-            return doMutationInversion(chromosome);
-        }else if(Configuration.instance.mutationType.equals(Scramble)) {
-            System.out.println("Mutation: Scramble");
-            return doMutationScramble(chromosome);
-        }
 
-        System.out.println("Incorrect ENUM Type");
-        return null;
+        if(Configuration.instance.randomGenerator.nextFloat() <= Configuration.instance.mutationRatio){
+            if (Configuration.instance.mutationType.equals(Displacement)) {
+                System.out.println("Mutation: Displacement");
+                return doMutationDisplacement(chromosome);
+            }else if(Configuration.instance.mutationType.equals(Exchange)){
+                System.out.println("Mutation: Exchange");
+                return doMutationExchange(chromosome);
+            }else if(Configuration.instance.mutationType.equals(Insertion)){
+                System.out.println("Mutation: Insertion");
+                return doMutationInsertion(chromosome);
+            }else if(Configuration.instance.mutationType.equals(Inversion)){
+                System.out.println("Mutation: Inversion");
+                return doMutationInversion(chromosome);
+            }else if(Configuration.instance.mutationType.equals(Scramble)) {
+                System.out.println("Mutation: Scramble");
+                return doMutationScramble(chromosome);
+            }
+
+            System.out.println("Incorrect ENUM Type");
+            return chromosome;
+        }else{
+            return chromosome;
+        }
     }
 
     private IChromosome doMutationDisplacement(IChromosome chromosome){
@@ -41,7 +46,11 @@ public class Mutation implements IMutation {
     }
 
     private IChromosome doMutationInsertion(IChromosome chromosome){
+        StringBuilder chromosomeString = new StringBuilder(chromosome.getChromosome());
+        int index = Configuration.instance.randomGenerator.nextInt(chromosomeString.length());
+
         return null;
+
     }
 
     private IChromosome doMutationInversion(IChromosome chromosome){
@@ -63,7 +72,12 @@ public class Mutation implements IMutation {
 
         System.out.println("New chromosome: " + chromosomeString.toString());
 
-        return new Chromosome(chromosomeString.toString());
+        IChromosome newChromosome = new Chromosome(chromosomeString.toString());
+        if(newChromosome.isValid()){
+            return newChromosome;
+        }else{
+            return null;
+        }
     }
 
     private IChromosome doMutationScramble(IChromosome chromosome){
