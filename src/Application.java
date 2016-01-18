@@ -1,6 +1,5 @@
-/**
- * Created by ASchick on 18.01.2016.
- */
+import Configuration.Configuration;
+import com.sun.org.apache.bcel.internal.generic.POP;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -11,12 +10,24 @@ import java.io.IOException;
 
 public class Application {
     public static final IProject[] PROJECTS = new Project[150];
+    public final int populationAmount = 100;
 
 
     public static void main(String[] args) {
 
         Application obj = new Application();
 
+
+
+    }
+
+    public Population generatePopulation(){
+        Population population = new Population(new Chromosome[Configuration.instance.populationSize]);
+        for (int i = 0; i < Configuration.instance.populationSize; i++) {
+            population.getPopulation()[i] = new Chromosome();
+        }
+
+        return population;
     }
 
     public Application() {
@@ -64,8 +75,9 @@ public class Application {
         System.out.println("Done");
 
 
-        System.out.println("Starte");
+        System.out.println("Start");
 
+        IPopulation population = generatePopulation();
 
     }
 }

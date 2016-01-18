@@ -3,9 +3,9 @@
  */
 public class Population implements IPopulation {
 
-    private Chromosome[] population;
+    private IChromosome[] population;
 
-    Population(Chromosome[] population){
+    Population(IChromosome[] population){
         this.population = population;
     }
 
@@ -20,7 +20,7 @@ public class Population implements IPopulation {
     }
 
     @Override
-    public Chromosome[] getPopulation() {
+    public IChromosome[] getPopulation() {
         return population;
     }
 

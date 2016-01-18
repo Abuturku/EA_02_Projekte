@@ -9,7 +9,7 @@ public interface IPopulation {
 
     public IChromosome getFittest();
 
-    public Chromosome[] getPopulation();
+    public IChromosome[] getPopulation();
 
     int getSumPopulationFitness();
 

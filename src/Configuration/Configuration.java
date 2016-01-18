@@ -7,9 +7,10 @@ public enum Configuration {
 
     instance;
     public Enum crossoverType = CrossoverEnum.KPoint;
-        public int kForCrossOver = 3;
+    public int kForCrossOver = 3;
     public Enum mutationType = MutationEnum.Displacement;
     public Enum selectionType = SelectionEnum.RouletteWheel;
     public MersenneTwisterFast randomGenerator = new MersenneTwisterFast(System.nanoTime());
     public double mutationRatio = 0.0005;
+    public int populationSize = 100;
 }

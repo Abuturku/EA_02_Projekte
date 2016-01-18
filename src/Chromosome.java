@@ -12,6 +12,9 @@ public class Chromosome implements IChromosome {
 
     public Chromosome(String chromosomeString){
         this.chromosomeString = chromosomeString;
+    }
+
+    public Chromosome(){
         generateRandomChromosome();
     }
 
