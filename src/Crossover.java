@@ -1,6 +1,8 @@
 import Configuration.Configuration;
 import Configuration.CrossoverEnum;
 
+import java.util.Arrays;
+
 /**
  * Created by Team02 on 18.01.2016.
  */
@@ -58,7 +60,7 @@ public class Crossover implements ICrossover {
                 numberOfHealthyChildren++;
             }
             //breed 2nd child
-            IChromosome child = new Chromosome( parent2.getChromosome().substring(0,randomSplit).concat(
+            child = new Chromosome( parent2.getChromosome().substring(0,randomSplit).concat(
                                                 parent1.getChromosome().substring(randomSplit,149)      )
                                               );
             if (numberOfHealthyChildren < 2){
@@ -75,13 +77,101 @@ public class Crossover implements ICrossover {
 
     private IChromosome[] twoPointCO(IChromosome parent1, IChromosome parent2){
         IChromosome[] children = new IChromosome[2];
+        int numberOfHealthyChildren = 0;
+
+        do{
+            int randomSplit1;
+            int randomSplit2;
+            randomSplit1 = Configuration.instance.randomGenerator.nextInt(1, 148);
+            do{
+                randomSplit2 = Configuration.instance.randomGenerator.nextInt(1, 148);
+            } while (randomSplit1 == randomSplit2);
+
+            int firstSplit = (randomSplit1 > randomSplit2) ? randomSplit1 : randomSplit2;
+            int secondSplit = (randomSplit1 < randomSplit2) ? randomSplit1 : randomSplit2;
+
+            //breed 1st child
+            IChromosome child = new Chromosome( parent1.getChromosome().substring(0,firstSplit).concat(
+                                                parent2.getChromosome().substring(firstSplit,secondSplit)).concat(
+                                                parent1.getChromosome().substring(secondSplit,149))
+            );
+            if (child.isValid()){
+                children[numberOfHealthyChildren]=child;
+                numberOfHealthyChildren++;
+            }
+            //breed 2nd child
+            child = new Chromosome( parent2.getChromosome().substring(0,firstSplit).concat(
+                                    parent1.getChromosome().substring(firstSplit,secondSplit)).concat(
+                                    parent2.getChromosome().substring(secondSplit,149))
+            );
+            if (numberOfHealthyChildren < 2){
+                if (child.isValid()){
+                    children[numberOfHealthyChildren]=child;
+                    numberOfHealthyChildren++;
+                }
+            }
+
+        } while (children[1]!=null);
 
         return children;
     }
 
     private IChromosome[] kPointCO(IChromosome parent1, IChromosome parent2){
         int k = Configuration.instance.kForCrossOver;
+        if(k<3){
+            throw new IllegalArgumentException( "Please use OnePoint for k=1 or TwoPoint for k=2. " +
+                                                "kPoint works only for values grater than 2." );
+        }
+
         IChromosome[] children = new IChromosome[2];
+        int numberOfHealthyChildren = 0;
+
+        do{
+            int[] randomSplit = new int[k];
+            randomSplit[0] = Configuration.instance.randomGenerator.nextInt(1, 148);
+            for (int i=1; i<k; i++){
+                boolean isNew = true;
+                randomSplit[i] = Configuration.instance.randomGenerator.nextInt(1, 148);
+                for (int j=1; j<i; j++){
+                    isNew=randomSplit[i]==randomSplit[j];
+                    if (isNew) { break; }
+                }
+            }
+
+            int[] sortedSplit = new int[k+2];
+            sortedSplit = randomSplit;
+            sortedSplit[k]=0;
+            sortedSplit[k+1]=149;
+            Arrays.sort(sortedSplit);
+
+            //breed 1st child
+            String childChromosome1 = "";
+            for (int i=0; i<k ; i++){
+                IChromosome currentParent = (i%2==0) ? parent1 : parent2;
+                childChromosome1 += currentParent.getChromosome().substring(sortedSplit[i],sortedSplit[i+1]);
+            }
+
+            IChromosome child = new Chromosome( childChromosome1 );
+            if (child.isValid()){
+                children[numberOfHealthyChildren]=child;
+                numberOfHealthyChildren++;
+            }
+            //breed 2nd child
+            String childChromosome2 = "";
+            for (int i=0; i<k ; i++){
+                IChromosome currentParent = (i%2==0) ? parent1 : parent2;
+                childChromosome2 += currentParent.getChromosome().substring(sortedSplit[i],sortedSplit[i+1]);
+            }
+
+            child = new Chromosome( childChromosome2 );
+            if (numberOfHealthyChildren < 2){
+                if (child.isValid()){
+                    children[numberOfHealthyChildren]=child;
+                    numberOfHealthyChildren++;
+                }
+            }
+
+        } while (children[1]!=null);
 
         return children;
     }

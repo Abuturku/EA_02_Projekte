@@ -82,4 +82,17 @@ public class Chromosome implements IChromosome {
 
     }
 
+    @Override
+    public int compareTo(IChromosome chromosome) {
+        int fitnessOne = this.getFitness();
+        int fitnessTwo = chromosome.getFitness();
+        if(fitnessOne<fitnessTwo){
+            return -1;
+        }else if(fitnessOne>fitnessTwo){
+            return 1;
+        }else{
+            return 0;
+        }
+    }
+
 }

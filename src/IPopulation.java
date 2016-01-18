@@ -13,4 +13,6 @@ public interface IPopulation {
 
     int getSumPopulationFitness();
 
+    public void sortPopulation();
+
 }
