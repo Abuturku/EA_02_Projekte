@@ -3,6 +3,8 @@
  */
 public interface IChromosome {
 
+    public String generateRandomChromosome();
+
     public String getChromosome();
 
     public boolean isValid();
