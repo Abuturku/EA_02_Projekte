@@ -97,7 +97,13 @@ public class Population implements IPopulation {
     }
 
     @Override
-    public void sortPopulation() {
+    public IPopulation sortPopulation() {
         Arrays.sort(population);
+        return this;
+    }
+
+    @Override
+    public IChromosome getLastChromosomeOfPopulation() {
+        return this.getPopulation()[this.getPopulation().length-1];
     }
 }

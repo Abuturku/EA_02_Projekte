@@ -13,6 +13,7 @@ public interface IPopulation {
 
     int getSumPopulationFitness();
 
-    public void sortPopulation();
+    public IPopulation sortPopulation();
 
+    public IChromosome getLastChromosomeOfPopulation();
 }

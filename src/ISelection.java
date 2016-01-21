@@ -5,7 +5,7 @@ import Configuration.SelectionEnum;
  */
 public interface ISelection {
 
-    public Chromosome[] topTenPercentOfPopulation(IPopulation population);
+    public IChromosome[] topTenPercentOfPopulation(IPopulation population);
 
     public IChromosome[] getParents(IPopulation population, SelectionEnum selectionType);
 }

@@ -1,65 +1,87 @@
 import Configuration.Configuration;
 import Configuration.SelectionEnum;
 
+import java.util.Arrays;
+
 /**
  * Created by Jan.Rissmann on 18.01.2016.
  */
 public class Selection implements ISelection{
 
 
-    public Chromosome[] topTenPercentOfPopulation(IPopulation population){
-
-
-        return null;
+    public IChromosome[] topTenPercentOfPopulation(IPopulation population){
+        return Arrays.copyOf(population.sortPopulation().getPopulation(),population.getPopulation().length/10);
     }
 
     public IChromosome[] getParents(IPopulation population, SelectionEnum selectionType){
+
+        IPopulation fatherPartOfPopulation = getFatherPartOfPopulation(population);
+        IPopulation motherPartOfPopulation = getMotherPartOfPopulation(population);
         IChromosome[] parents = new Chromosome[2];
-
-        IPopulation partOfPopulationFather = new Population(new Chromosome[population.getPopulation().length/2]);
-        IPopulation partOfPopulationMother = new Population(new Chromosome[population.getPopulation().length/2]);
-
-        for(int i=0; i < population.getPopulation().length; i+=2){
-            partOfPopulationFather.getPopulation()[i/2] = population.getPopulation()[i];
-            partOfPopulationMother.getPopulation()[i/2] = population.getPopulation()[i+1];
-        }
 
         switch (selectionType){
             case RouletteWheel:
-                parents[0] = doRouletteWheelSelection(partOfPopulationFather);
-                parents[1] = doRouletteWheelSelection(partOfPopulationMother);
+                parents = getParentsWithRouletteWheelSelection(fatherPartOfPopulation, motherPartOfPopulation);
                 break;
             case Tournament:
-                parents[0] = doTournamentSelection(partOfPopulationFather);
-                parents[1] = doTournamentSelection(partOfPopulationMother);
+                parents = getParentsWithTournamentSelection(fatherPartOfPopulation, motherPartOfPopulation);
                 break;
         }
 
         return parents;
     }
 
-    private IChromosome doRouletteWheelSelection(IPopulation partOfPopulation) {
-        double count = 0;
-        double sumPopulationFitness = partOfPopulation.getSumPopulationFitness();
+    private IChromosome[] getParentsWithTournamentSelection(IPopulation fatherPartOfPopulation, IPopulation motherPartOfPopulation) {
+        IChromosome[] parents = new Chromosome[2];
+        parents[0] = doTournamentSelection(fatherPartOfPopulation);
+        parents[1] = doTournamentSelection(motherPartOfPopulation);
+        return parents;
+    }
 
-        double randomValue = Configuration.instance.randomGenerator.nextDouble(true, false);//1 ausgeschlossen 0 eingeschlossen
-        randomValue = (int)(randomValue * 100000.0) / 100000.0;
-        //System.out.println("START");
+    private IChromosome[] getParentsWithRouletteWheelSelection(IPopulation fatherPartOfPopulation, IPopulation motherPartOfPopulation) {
+        IChromosome[] parents = new Chromosome[2];
+        parents[0] = doRouletteWheelSelection(fatherPartOfPopulation);
+        parents[1] = doRouletteWheelSelection(motherPartOfPopulation);
+        return parents;
+    }
+
+    private IChromosome doRouletteWheelSelection(IPopulation partOfPopulation) {
+        double count = -0.00001;
+        double sumPopulationFitness = partOfPopulation.getSumPopulationFitness();
+        double randomValue = getRandomValueBetweenNullAndOne();
+
         for(IChromosome chromosome : partOfPopulation.getPopulation()){
-            double selectionProbability = Math.round(chromosome.getFitness()/sumPopulationFitness * 100000.0) / 100000.0 - 0.00001;
-            Range range = new Range(count, count + selectionProbability);
+            Range range = getRangeFromChromosomeInPopulation(count, sumPopulationFitness, chromosome);
             if (range.inRange(randomValue)){
-                //System.out.println("ENDE");
                 return chromosome;
             }
-            count+=selectionProbability;
-            //System.out.println("RANGE: " + range.min +" < "+ range.max);
+            count = range.getMax();
         }
+        return partOfPopulation.getLastChromosomeOfPopulation();
+    }
 
 
-        //System.out.println("IHR LIEGT FALSCH " +randomValue);
-        //System.exit(2);
-        return partOfPopulation.getPopulation()[partOfPopulation.getPopulation().length-1];
+    private Population getMotherPartOfPopulation(IPopulation population) {
+        return new Population(Arrays.copyOfRange(population.getPopulation(), population.getPopulation().length / 2 + 1, population.getPopulation().length - 1));
+    }
+
+    private Population getFatherPartOfPopulation(IPopulation population) {
+        return new Population(Arrays.copyOfRange(population.getPopulation(), 0, population.getPopulation().length / 2));
+    }
+
+    private Range getRangeFromChromosomeInPopulation(double count, double sumPopulationFitness, IChromosome chromosome) {
+        double selectionProbability = getSelectionProbabilityFromChromosomeInPopulation(sumPopulationFitness, chromosome);
+        return new Range(count + 0.00001, count + selectionProbability);
+    }
+
+    private double getSelectionProbabilityFromChromosomeInPopulation(double sumPopulationFitness, IChromosome chromosome) {
+        return Math.round(chromosome.getFitness()/sumPopulationFitness * 100000.0) / 100000.0 - 0.00001;
+    }
+
+    private double getRandomValueBetweenNullAndOne() {
+        double randomValue = Configuration.instance.randomGenerator.nextDouble(true, false);//1 ausgeschlossen 0 eingeschlossen
+        randomValue = (int)(randomValue * 100000.0) / 100000.0;
+        return randomValue;
     }
 
     private IChromosome doTournamentSelection(IPopulation population){
