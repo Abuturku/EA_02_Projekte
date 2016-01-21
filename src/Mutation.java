@@ -11,22 +11,21 @@ public class Mutation implements IMutation {
 
     @Override
     public IChromosome doMutation(IChromosome chromosome) {
-
         if(Configuration.instance.randomGenerator.nextFloat() <= Configuration.instance.mutationRatio){
             if (Configuration.instance.mutationType.equals(Displacement)) {
-                System.out.println("Mutation: Displacement");
+               // System.out.println("Mutation: Displacement");
                 return doMutationDisplacement(chromosome);
             }else if(Configuration.instance.mutationType.equals(Exchange)){
-                System.out.println("Mutation: Exchange");
+                //System.out.println("Mutation: Exchange");
                 return doMutationExchange(chromosome);
             }else if(Configuration.instance.mutationType.equals(Insertion)){
-                System.out.println("Mutation: Insertion");
+                //System.out.println("Mutation: Insertion");
                 return doMutationInsertion(chromosome);
             }else if(Configuration.instance.mutationType.equals(Inversion)){
-                System.out.println("Mutation: Inversion");
+                //System.out.println("Mutation: Inversion");
                 return doMutationInversion(chromosome);
             }else if(Configuration.instance.mutationType.equals(Scramble)) {
-                System.out.println("Mutation: Scramble");
+                //System.out.println("Mutation: Scramble");
                 return doMutationScramble(chromosome);
             }
 
@@ -42,7 +41,7 @@ public class Mutation implements IMutation {
         int start = Configuration.instance.randomGenerator.nextInt(chromosomeString.length()/2);
         int end = Configuration.instance.randomGenerator.nextInt(start,chromosomeString.length());
 
-        System.out.println("Displace Chromosome: " + chromosomeString.toString());
+       // System.out.println("Displace Chromosome: " + chromosomeString.toString());
 
         String toDisplace = chromosomeString.substring(start,end);
         chromosomeString.delete(start,end);
@@ -51,13 +50,13 @@ public class Mutation implements IMutation {
         int displaceIndex = Configuration.instance.randomGenerator.nextInt(chromosomeString.length());
         chromosomeString.insert(displaceIndex, toDisplace);
 
-        System.out.println("New Chromosome: " + chromosomeString.toString());
+        //System.out.println("New Chromosome: " + chromosomeString.toString());
 
         IChromosome newChromosome = new Chromosome(chromosomeString.toString());
         if(newChromosome.isValid()){
             return newChromosome;
         }else{
-            System.out.println("Chromosome is not Valid. Create random Chromosome");
+           // System.out.println("Chromosome is not Valid. Create random Chromosome");
             return chromosome.generateRandomChromosome();
         }
     }
@@ -70,7 +69,7 @@ public class Mutation implements IMutation {
         char charOne = chromosomeString.charAt(indexOne);
         char charTwo = chromosomeString.charAt(indexTwo);
 
-        System.out.print("Swap Character on '" + indexOne + "' and '" + indexTwo + "' on Chromosome: " + chromosomeString.toString());
+       // System.out.print("Swap Character on '" + indexOne + "' and '" + indexTwo + "' on Chromosome: " + chromosomeString.toString());
 
         chromosomeString.deleteCharAt(indexOne);
         chromosomeString.insert(indexOne, charTwo);
@@ -78,13 +77,13 @@ public class Mutation implements IMutation {
         chromosomeString.deleteCharAt(indexTwo);
         chromosomeString.insert(indexOne, charOne);
 
-        System.out.println("New Chromosome: " + chromosomeString.toString());
+      //  System.out.println("New Chromosome: " + chromosomeString.toString());
 
         IChromosome newChromosome = new Chromosome(chromosomeString.toString());
         if(newChromosome.isValid()){
             return newChromosome;
         }else{
-            System.out.println("Chromosome is not Valid. Create random Chromosome");
+            //System.out.println("Chromosome is not Valid. Create random Chromosome");
             return chromosome.generateRandomChromosome();
         }
     }
@@ -96,18 +95,18 @@ public class Mutation implements IMutation {
 
         char cutChar = chromosomeString.charAt(indexCut);
 
-        System.out.println("Cut char '" + cutChar + "' at '"+ indexCut + "' from Chromosome: " + chromosomeString.toString());
+        //System.out.println("Cut char '" + cutChar + "' at '"+ indexCut + "' from Chromosome: " + chromosomeString.toString());
 
         chromosomeString.deleteCharAt(indexCut);
         chromosomeString.insert(indexPaste, cutChar);
 
-        System.out.println("New Chromosome: " + chromosomeString.toString());
+        //System.out.println("New Chromosome: " + chromosomeString.toString());
 
         IChromosome newChromosome = new Chromosome(chromosomeString.toString());
         if(newChromosome.isValid()){
             return newChromosome;
         }else{
-            System.out.println("Chromosome is not Valid. Create random Chromosome");
+          //  System.out.println("Chromosome is not Valid. Create random Chromosome");
             return chromosome.generateRandomChromosome();
         }
     }
@@ -117,19 +116,19 @@ public class Mutation implements IMutation {
         int start = Configuration.instance.randomGenerator.nextInt(chromosomeString.length()-2);
         int end = Configuration.instance.randomGenerator.nextInt(start, chromosomeString.length());
 
-        System.out.println("Reverse chromosome: " + chromosomeString.toString());
+       // System.out.println("Reverse chromosome: " + chromosomeString.toString());
 
         StringBuilder toTurn = new StringBuilder(chromosomeString.substring(start,end));
         toTurn.reverse();
         chromosomeString.replace(start,end,toTurn.toString());
 
-        System.out.println("New chromosome: " + chromosomeString.toString());
+        //System.out.println("New chromosome: " + chromosomeString.toString());
 
         IChromosome newChromosome = new Chromosome(chromosomeString.toString());
         if(newChromosome.isValid()){
             return newChromosome;
         }else{
-            System.out.println("Chromosome is not Valid. Create random Chromosome");
+            //System.out.println("Chromosome is not Valid. Create random Chromosome");
             return chromosome.generateRandomChromosome();
         }
     }
@@ -139,7 +138,7 @@ public class Mutation implements IMutation {
         int start = Configuration.instance.randomGenerator.nextInt(chromosomeString.length()-2);
         int end = Configuration.instance.randomGenerator.nextInt(start,chromosomeString.length());
 
-        System.out.println("Mix Chromosome: " + chromosomeString.toString());
+       // System.out.println("Mix Chromosome: " + chromosomeString.toString());
 
         StringBuilder toMix = new StringBuilder(chromosomeString.substring(start,end));
 
@@ -161,13 +160,13 @@ public class Mutation implements IMutation {
 
         chromosomeString.replace(start,end, toMix.toString());
 
-        System.out.println("New chromosome: " + chromosomeString.toString());
+        //System.out.println("New chromosome: " + chromosomeString.toString());
 
         IChromosome newChromosome = new Chromosome(chromosomeString.toString());
         if(newChromosome.isValid()){
             return newChromosome;
         }else{
-            System.out.println("Chromosome is not Valid. Create random Chromosome");
+            //System.out.println("Chromosome is not Valid. Create random Chromosome");
             return chromosome.generateRandomChromosome();
         }
     }

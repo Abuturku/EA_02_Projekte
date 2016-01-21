@@ -1,7 +1,7 @@
 /**
  * Created by Linda on 18.01.2016.
  */
-public interface IChromosome {
+public interface IChromosome extends  Comparable<IChromosome>{
 
     public IChromosome generateRandomChromosome();
 

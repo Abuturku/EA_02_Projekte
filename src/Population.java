@@ -15,8 +15,9 @@ public class Population implements IPopulation {
 
     @Override
     public IPopulation evolve() {
-        IPopulation newPop = new Population(new Chromosome[20]);
-        IPopulation evolvedPop = new Population(new Chromosome[Configuration.instance.populationSize]);
+        IPopulation newPop = new Population(new Chromosome[20]); //TODO VARIABLE MACHEN und populationsize muss durch diesen wert teilbar sein
+        IChromosome[] evolvedChromosome =  new Chromosome[Configuration.instance.populationSize];
+
 
         for(int j = 0; j < Configuration.instance.populationSize; j+= 20){
             for (int i = 0; i < 20; i++){
@@ -39,14 +40,45 @@ public class Population implements IPopulation {
             }
 
 
-        }
+            IChromosome[] newChromosomes =  killBadChromosomes(newPop.getPopulation());
+            newChromosomes = refillRandomChromosomes(newChromosomes);
 
+            newChromosomes[newChromosomes.length-2] = children[0];
+            newChromosomes[newChromosomes.length-1] = children[1];
+
+            //System.out.println("Laenge vorher: "+ newPop.getPopulation().length +" | Laenge nachher: " + newChromosomes.length);
+
+            for (int i = 0; i < newChromosomes.length;i++){
+                evolvedChromosome[j+i] = newChromosomes[i];
+            }
+        }
+        IPopulation evolvedPop = new Population(evolvedChromosome);
         return evolvedPop;
+    }
+
+    private IChromosome[] killBadChromosomes(IChromosome[] chromosomes){
+        Arrays.sort(chromosomes);
+        IChromosome[] newChromosomes = Arrays.copyOf(chromosomes, chromosomes.length/2);
+        return newChromosomes;
+    }
+
+    private IChromosome[] refillRandomChromosomes(IChromosome[] chromosomes){
+        IChromosome[] newChromosomes = Arrays.copyOf(chromosomes,chromosomes.length*2);
+        Arrays.fill(newChromosomes, chromosomes.length,newChromosomes.length, new Chromosome());
+        return newChromosomes;
     }
 
     @Override
     public IChromosome getFittest() {
-        return null;
+        IChromosome fittest = null;
+        for(IChromosome chromosome : this.population){
+            if(fittest == null || fittest.getFitness() < chromosome.getFitness()){
+                fittest = chromosome;
+            }
+        }
+
+
+        return fittest;
     }
 
     @Override
@@ -56,7 +88,12 @@ public class Population implements IPopulation {
 
     @Override
     public int getSumPopulationFitness() {
-        return 0;
+
+        int sumFitness = 0;
+        for(IChromosome chromosome : population){
+            sumFitness += chromosome.getFitness();
+        }
+        return sumFitness;
     }
 
     @Override

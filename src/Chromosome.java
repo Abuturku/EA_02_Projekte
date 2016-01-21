@@ -6,8 +6,7 @@ import Configuration.Configuration;
 
 public class Chromosome implements IChromosome {
 
-    private int budget = 1500;
-    private int length = 150;
+
     private String chromosomeString;
 
     public Chromosome(String chromosomeString){
@@ -24,7 +23,7 @@ public class Chromosome implements IChromosome {
 
         while(!isValid){
             this.chromosomeString = getRandomChromosomeString();
-            System.out.println("Set new Chromosome: "+ this.chromosomeString);
+            //System.out.println("Set new Chromosome: "+ this.chromosomeString);
             isValid = isValid();
         }
         return this;
@@ -32,7 +31,7 @@ public class Chromosome implements IChromosome {
 
     private String getRandomChromosomeString(){
         StringBuilder characters = new StringBuilder();
-        for(int index = 0; index < this.length; index++){
+        for(int index = 0; index < Configuration.instance.numberOfProjects; index++){
             if (Configuration.instance.randomGenerator.nextInt(0,100) < 80){
                 characters.append(0);
             }else{
@@ -41,7 +40,7 @@ public class Chromosome implements IChromosome {
 
 
         }
-        System.out.println(characters.toString());
+        //System.out.println(characters.toString());
         return characters.toString();
     }
 
@@ -63,8 +62,7 @@ public class Chromosome implements IChromosome {
 
         }
 
-        if(tempCost >= this.budget){
-            System.out.println("Chromosome ist not Valid");
+        if(tempCost >= Configuration.instance.maxBudget){
             return false;
         }else{
             return true;
@@ -99,5 +97,6 @@ public class Chromosome implements IChromosome {
             return 0;
         }
     }
+
 
 }

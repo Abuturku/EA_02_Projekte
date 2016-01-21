@@ -78,8 +78,17 @@ public class Application {
         System.out.println("Start");
 
         IPopulation population = generatePopulation();
-        IPopulation evolvedPopulation = population.evolve();
-
+        int best = 0;
+        int evolved = 0;
+        while(true) {
+            evolved++;
+            IPopulation evolvedPopulation = population.evolve();
+            int temp = evolvedPopulation.getFittest().getFitness();
+            if(best <temp ){
+                best = temp;
+                System.out.println("NEW FITNESS: " + best +" GENERATION: "+evolved);
+            }
+        }
     }
 }
 

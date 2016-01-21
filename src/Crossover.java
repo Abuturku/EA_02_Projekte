@@ -87,8 +87,8 @@ public class Crossover implements ICrossover {
                 randomSplit2 = Configuration.instance.randomGenerator.nextInt(1, 148);
             } while (randomSplit1 == randomSplit2);
 
-            int firstSplit = (randomSplit1 > randomSplit2) ? randomSplit1 : randomSplit2;
-            int secondSplit = (randomSplit1 < randomSplit2) ? randomSplit1 : randomSplit2;
+            int firstSplit = (randomSplit1 < randomSplit2) ? randomSplit1 : randomSplit2;
+            int secondSplit = (randomSplit1 > randomSplit2) ? randomSplit1 : randomSplit2;
 
             //breed 1st child
             IChromosome child = new Chromosome( parent1.getChromosome().substring(0,firstSplit).concat(
@@ -138,8 +138,7 @@ public class Crossover implements ICrossover {
                 }
             }
 
-            int[] sortedSplit = new int[k+2];
-            sortedSplit = randomSplit;
+            int[] sortedSplit = Arrays.copyOf(randomSplit, k+2);
             sortedSplit[k]=0;
             sortedSplit[k+1]=149;
             Arrays.sort(sortedSplit);
