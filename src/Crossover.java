@@ -178,7 +178,7 @@ public class Crossover implements ICrossover {
 
     private IChromosome[] uniformCO(IChromosome parent1, IChromosome parent2){
         IChromosome[] children = new IChromosome[2];
-        float ratio = 100*Configuration.instance.mixingRation; //in Prozent
+        float ratio = 100*Configuration.instance.mixingRatio; //in Prozent
         if(ratio<=0||ratio>=100){
             throw new IllegalArgumentException( "The mixing ratio has to be a value between 0 and 1." );
         }
