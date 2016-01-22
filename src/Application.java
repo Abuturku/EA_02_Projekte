@@ -76,7 +76,7 @@ public class Application {
 
 
         System.out.println("Start");
-
+        long start = System.currentTimeMillis();
         IPopulation population = generatePopulation();
         int best = 0;
         int evolved = 0;
@@ -86,7 +86,7 @@ public class Application {
             int temp = evolvedPopulation.getFittest().getFitness();
             if(best <temp ){
                 best = temp;
-                System.out.println("NEW FITNESS: " + best +" GENERATION: "+evolved);
+                System.out.println("NEW FITNESS: " + best +" GENERATION: "+evolved+" TIME: "+((System.currentTimeMillis()-start)/1000.0)+"s");
             }
         }
     }
