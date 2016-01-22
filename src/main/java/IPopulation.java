@@ -11,6 +11,8 @@ public interface IPopulation {
 
     public IChromosome[] getPopulation();
 
+    void setPopulation(IChromosome[] chromosomeArray);
+
     int getSumPopulationFitness();
 
     public IPopulation sortPopulation();

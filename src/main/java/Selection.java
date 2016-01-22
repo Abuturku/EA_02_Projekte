@@ -1,5 +1,5 @@
-import Configuration.Configuration;
 import Configuration.SelectionEnum;
+import Configuration.MersenneTwisterFast;
 
 import java.util.Arrays;
 
@@ -7,11 +7,8 @@ import java.util.Arrays;
  * Created by Jan.Rissmann on 18.01.2016.
  */
 public class Selection implements ISelection{
+    MersenneTwisterFast randomGenerator = new MersenneTwisterFast(System.nanoTime());
 
-
-    public IChromosome[] topTenPercentOfPopulation(IPopulation population){
-        return Arrays.copyOf(population.sortPopulation().getPopulation(),population.getPopulation().length/10);
-    }
 
     public IChromosome[] getParents(IPopulation population, SelectionEnum selectionType){
 
@@ -20,10 +17,10 @@ public class Selection implements ISelection{
         IChromosome[] parents = new Chromosome[2];
 
         switch (selectionType){
-            case RouletteWheel:
+            case ROULETTE_WHEEL:
                 parents = getParentsWithRouletteWheelSelection(fatherPartOfPopulation, motherPartOfPopulation);
                 break;
-            case Tournament:
+            case TOURNAMENT:
                 parents = getParentsWithTournamentSelection(fatherPartOfPopulation, motherPartOfPopulation);
                 break;
         }
@@ -79,7 +76,7 @@ public class Selection implements ISelection{
     }
 
     private double getRandomValueBetweenNullAndOne() {
-        double randomValue = Configuration.instance.randomGenerator.nextDouble(true, false);//1 ausgeschlossen 0 eingeschlossen
+        double randomValue = randomGenerator.nextDouble(true, false);//1 ausgeschlossen 0 eingeschlossen
         randomValue = (int)(randomValue * 100000.0) / 100000.0;
         return randomValue;
     }

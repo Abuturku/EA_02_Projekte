@@ -7,7 +7,7 @@ public interface IChromosome extends  Comparable<IChromosome>{
 
     public String getChromosome();
 
-    public boolean isValid();
+    public boolean isInPriceBudget();
 
     public int getFitness();
 

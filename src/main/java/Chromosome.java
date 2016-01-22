@@ -1,10 +1,12 @@
 import Configuration.Configuration;
+import Configuration.MersenneTwisterFast;
 
 /**
  * Created by Linda on 18.01.2016.
  */
 
 public class Chromosome implements IChromosome {
+    MersenneTwisterFast randomGenerator = new MersenneTwisterFast(System.nanoTime());
 
 
     private String chromosomeString;
@@ -19,20 +21,16 @@ public class Chromosome implements IChromosome {
 
     @Override
     public IChromosome generateRandomChromosome() {
-        boolean isValid = false;
-
-        while(!isValid){
-            this.chromosomeString = getRandomChromosomeString();
-            //System.out.println("Set new Chromosome: "+ this.chromosomeString);
-            isValid = isValid();
-        }
+        do{
+            this.chromosomeString = generateRandomChromosomeString();
+        } while(!this.isInPriceBudget());
         return this;
     }
 
-    private String getRandomChromosomeString(){
+    private String generateRandomChromosomeString(){
         StringBuilder characters = new StringBuilder();
-        for(int index = 0; index < Configuration.instance.numberOfProjects; index++){
-            if (Configuration.instance.randomGenerator.nextInt(0,100) < 80){
+        for(int index = 0; index < Configuration.INSTANCE.NUMBER_OF_PROJECTS; index++){
+            if (randomGenerator.nextInt(0,100) < 80){
                 characters.append(0);
             }else{
                 characters.append(1);
@@ -40,7 +38,6 @@ public class Chromosome implements IChromosome {
 
 
         }
-        //System.out.println(characters.toString());
         return characters.toString();
     }
 
@@ -51,37 +48,40 @@ public class Chromosome implements IChromosome {
     }
 
     @Override
-    public boolean isValid(){
-        char[] characters = chromosomeString.toCharArray();
-        int tempCost = 0;
-        for(int index = 0; index < characters.length; index++){
-            char character = characters[index];
-            if(character == '1'){
-                tempCost += Application.PROJECTS[index].getCost();
-            }
-
-        }
-
-        if(tempCost >= Configuration.instance.maxBudget){
+    public boolean isInPriceBudget(){
+        if(this.getCost() >= Configuration.INSTANCE.MAX_BUDGET){
             return false;
         }else{
             return true;
         }
     }
 
-    @Override
-    public int getFitness(){
+    private int getCost() {
         char[] characters = chromosomeString.toCharArray();
-        int tempFitness = 0;
+        int costOfChromosome = 0;
         for(int index = 0; index < characters.length; index++){
             char character = characters[index];
             if(character == '1'){
-                tempFitness += Application.PROJECTS[index].getFitness();
+                costOfChromosome += Application.PROJECTS[index].getCost();
+            }
+
+        }
+        return costOfChromosome;
+    }
+
+    @Override
+    public int getFitness(){
+        char[] characters = chromosomeString.toCharArray();
+        int fitnessOfChromosome = 0;
+        for(int index = 0; index < characters.length; index++){
+            char character = characters[index];
+            if(character == '1'){
+                fitnessOfChromosome += Application.PROJECTS[index].getFitness();
             }
 
         }
 
-       return tempFitness;
+       return fitnessOfChromosome;
 
     }
 
@@ -90,9 +90,9 @@ public class Chromosome implements IChromosome {
         int fitnessOne = this.getFitness();
         int fitnessTwo = chromosome.getFitness();
         if(fitnessOne<fitnessTwo){
-            return -1;
-        }else if(fitnessOne>fitnessTwo){
             return 1;
+        }else if(fitnessOne>fitnessTwo){
+            return -1;
         }else{
             return 0;
         }

@@ -1,5 +1,4 @@
 import Configuration.Configuration;
-import com.sun.org.apache.bcel.internal.generic.POP;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -10,29 +9,54 @@ import java.io.IOException;
 
 public class Application {
     public static final IProject[] PROJECTS = new Project[150];
-    public final int populationAmount = 100;
-
+    private int fitnessOfFittestChromosome = 0;
 
     public static void main(String[] args) {
 
         Application obj = new Application();
 
+    }
 
+    public Application() {
 
+        loadProjectsFromCSV("././data/projectData.csv");
+
+        evolvePopulation(generatePopulation());
     }
 
     public Population generatePopulation(){
-        Population population = new Population(new Chromosome[Configuration.instance.populationSize]);
-        for (int i = 0; i < Configuration.instance.populationSize; i++) {
+        Population population = new Population(new Chromosome[Configuration.INSTANCE.POPULATION_SIZE]);
+        for (int i = 0; i < Configuration.INSTANCE.POPULATION_SIZE; i++) {
             population.getPopulation()[i] = new Chromosome();
         }
 
         return population;
     }
 
-    public Application() {
+    private void evolvePopulation(IPopulation population) {
+        int evolved = 0;
+        long startTimeMillis = System.currentTimeMillis();
+        while(true) {
+            evolved++;
+            population = population.evolve();
+            reportFittestChromosome(evolved, population);
+        }
+    }
 
-        String csvFile = "././data/projectData.csv";
+    private void reportFittestChromosome(int evolved, IPopulation evolvedPopulation) {
+        int fitnessOfFittestChromosomeFromPopulation = evolvedPopulation.getFittest().getFitness();
+        if(fitnessOfFittestChromosome <fitnessOfFittestChromosomeFromPopulation ){
+            fitnessOfFittestChromosome = fitnessOfFittestChromosomeFromPopulation;
+            System.out.println("NEW FITNESS: " + fitnessOfFittestChromosome +" GENERATION: "+evolved);
+        }else if(fitnessOfFittestChromosome == fitnessOfFittestChromosomeFromPopulation){
+            //System.out.println("");
+        }else{
+            System.out.println("Schlechter als zuvor: " + fitnessOfFittestChromosomeFromPopulation +" GENERATION: "+evolved);
+        }
+    }
+
+    private void loadProjectsFromCSV(String csvFileAddress) {
+        String csvFile = csvFileAddress;
         BufferedReader br = null;
         String line = "";
         String cvsSplitBy = ";";
@@ -54,10 +78,6 @@ public class Application {
                     index++;
             }
 
-
-
-
-
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -76,20 +96,10 @@ public class Application {
 
 
         System.out.println("Start");
-        long start = System.currentTimeMillis();
-        IPopulation population = generatePopulation();
-        int best = 0;
-        int evolved = 0;
-        while(true) {
-            evolved++;
-            IPopulation evolvedPopulation = population.evolve();
-            int temp = evolvedPopulation.getFittest().getFitness();
-            if(best <temp ){
-                best = temp;
-                System.out.println("NEW FITNESS: " + best +" GENERATION: "+evolved+" TIME: "+((System.currentTimeMillis()-start)/1000.0)+"s");
-            }
-        }
     }
+
+
+
 }
 
 
