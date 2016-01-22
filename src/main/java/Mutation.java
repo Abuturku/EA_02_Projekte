@@ -37,7 +37,9 @@ public class Mutation implements IMutation {
 		StringBuilder chromosomeString = new StringBuilder(chromosome.getChromosome());
 		int start = randomGenerator.nextInt(chromosomeString.length() / 2);
 		int end = randomGenerator.nextInt(start, chromosomeString.length());
-
+		while(end == chromosomeString.length()-1){
+			end = randomGenerator.nextInt(start, chromosomeString.length());
+		}
 		// System.out.println("Displace Chromosome: " +
 		// chromosomeString.toString());
 
