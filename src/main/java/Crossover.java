@@ -144,14 +144,14 @@ public class Crossover implements ICrossover {
 
 			// breed 1st child
 			String childChromosome1 = "";
-			for (int i = 0; i < k; i++) {
+			for (int i = 0; i <= k; i++) {
 				IChromosome currentParent = (i % 2 == 0) ? parent1 : parent2;
 				childChromosome1 += currentParent.getChromosome().substring(sortedSplit[i], sortedSplit[i + 1]);
 			}
 
-			IChromosome child = new Chromosome(childChromosome1);
-			if (child.isInPriceBudget()) {
-				children[numberOfHealthyChildren] = child;
+			IChromosome child1 = new Chromosome(childChromosome1);
+			if (child1.isInPriceBudget()) {
+				children[numberOfHealthyChildren] = child1;
 				numberOfHealthyChildren++;
 			}
 			// breed 2nd child
@@ -161,10 +161,10 @@ public class Crossover implements ICrossover {
 				childChromosome2 += currentParent.getChromosome().substring(sortedSplit[i], sortedSplit[i + 1]);
 			}
 
-			child = new Chromosome(childChromosome2);
+			IChromosome child2 = new Chromosome(childChromosome2);
 			if (numberOfHealthyChildren < 2) {
-				if (child.isInPriceBudget()) {
-					children[numberOfHealthyChildren] = child;
+				if (child2.isInPriceBudget()) {
+					children[numberOfHealthyChildren] = child2;
 					numberOfHealthyChildren++;
 				}
 			}
