@@ -53,7 +53,7 @@ public class Crossover implements ICrossover {
 
 	private String concatParentChromosomeOnSplitPosition(IChromosome parent1, IChromosome parent2, int randomSplit) {
 		return parent1.getChromosome().substring(0, randomSplit)
-				.concat(parent2.getChromosome().substring(randomSplit, nProjects-1));
+				.concat(parent2.getChromosome().substring(randomSplit, nProjects));
 	}
 
 	private int getRandomSplit(int numberOfInvalidPos, int[] invalidCOPosition) {
@@ -92,7 +92,7 @@ public class Crossover implements ICrossover {
 			// breed 1st child
 			IChromosome child = new Chromosome(parent1.getChromosome().substring(0, firstSplit)
 					.concat(parent2.getChromosome().substring(firstSplit, secondSplit))
-					.concat(parent1.getChromosome().substring(secondSplit, nProjects-1)));
+					.concat(parent1.getChromosome().substring(secondSplit, nProjects)));
 			if (child.isInPriceBudget()) {
 				children[numberOfHealthyChildren] = child;
 				numberOfHealthyChildren++;
@@ -100,7 +100,7 @@ public class Crossover implements ICrossover {
 			// breed 2nd child
 			child = new Chromosome(parent2.getChromosome().substring(0, firstSplit)
 					.concat(parent1.getChromosome().substring(firstSplit, secondSplit))
-					.concat(parent2.getChromosome().substring(secondSplit, nProjects-1)));
+					.concat(parent2.getChromosome().substring(secondSplit, nProjects)));
 			if (numberOfHealthyChildren < 2) {
 				if (child.isInPriceBudget()) {
 					children[numberOfHealthyChildren] = child;
@@ -139,7 +139,7 @@ public class Crossover implements ICrossover {
 
 			int[] sortedSplit = Arrays.copyOf(randomSplit, k + 2);
 			sortedSplit[k] = 0;
-			sortedSplit[k + 1] = nProjects-1;
+			sortedSplit[k + 1] = nProjects;
 			Arrays.sort(sortedSplit);
 
 			// breed 1st child
