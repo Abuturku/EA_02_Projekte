@@ -156,7 +156,7 @@ public class Crossover implements ICrossover {
 			}
 			// breed 2nd child
 			String childChromosome2 = "";
-			for (int i = 0; i < k; i++) {
+			for (int i = 0; i <= k; i++) {
 				IChromosome currentParent = (i % 2 == 0) ? parent1 : parent2;
 				childChromosome2 += currentParent.getChromosome().substring(sortedSplit[i], sortedSplit[i + 1]);
 			}
@@ -183,8 +183,8 @@ public class Crossover implements ICrossover {
 
 		char[] caParent1 = parent1.getChromosome().toCharArray();
 		char[] caParent2 = parent2.getChromosome().toCharArray();
-		char[] caChild1 = new char[nProjects-1];
-		char[] caChild2 = new char[nProjects-1];
+		char[] caChild1 = new char[nProjects];
+		char[] caChild2 = new char[nProjects];
 
 		int parent1Full = (int) (1.5 * ratio);
 		int parent2Full = (int) (1.5 * ratio);
@@ -192,26 +192,50 @@ public class Crossover implements ICrossover {
 		int countParent2 = 0;
 
 		int numberOfHealthyChildren = 0;
+
 		do {
 			for (int i = 0; i < nProjects-1; i++) {
 				int randNr = randomGenerator.nextInt(0, 100);
+				boolean takeParent1 = randNr <= ratio;
+				boolean takeParent2 = randNr > ratio;
+				if(takeParent2 && countParent2 >= parent2Full){ //parent2 is full
+					takeParent1 = true;
+					takeParent2 = false;
+				}
+				if(takeParent1 && countParent1 >= parent1Full){ //parent1 is full
+					takeParent2 = true;
+					takeParent1 = false;
+				}
 
-				if (countParent1 < parent1Full && randNr <= ratio) {
+				if (takeParent1) {
+					//parent1 is chosen
 					caChild1[i] = caParent1[i];
 					caChild2[i] = caParent2[i];
-				} else if (countParent2 < parent2Full && randNr > ratio) {
+				}
+				else if (takeParent2) {
+					//parent2 is chosen
 					caChild1[i] = caParent2[i];
 					caChild2[i] = caParent1[i];
 				}
 			}
 
-			IChromosome child = new Chromosome(caChild1.toString());
+			String caChild1Chromosome = "";
+			String caChild2Chromosome = "";
+
+			for ( char bit : caChild1 ) {
+				caChild1Chromosome += bit;
+			}
+			for ( char bit : caChild2 ) {
+				caChild2Chromosome += bit;
+			}
+
+			IChromosome child = new Chromosome(caChild1Chromosome);
 			if (child.isInPriceBudget()) {
 				children[numberOfHealthyChildren] = child;
 				numberOfHealthyChildren++;
 			}
 
-			child = new Chromosome(caChild2.toString());
+			child = new Chromosome(caChild2Chromosome);
 			if (numberOfHealthyChildren < 2) {
 				if (child.isInPriceBudget()) {
 					children[numberOfHealthyChildren] = child;
