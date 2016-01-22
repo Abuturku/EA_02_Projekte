@@ -5,6 +5,7 @@ import java.util.Arrays;
 
 public class Crossover implements ICrossover {
 	MersenneTwisterFast randomGenerator = new MersenneTwisterFast(System.nanoTime());
+	private int nProjects = Configuration.INSTANCE.NUMBER_OF_PROJECTS;
 
 	public IChromosome[] doCrossover(IChromosome parent1, IChromosome parent2) {
 		IChromosome[] children = new IChromosome[2];
@@ -29,7 +30,7 @@ public class Crossover implements ICrossover {
 		IChromosome[] children = new IChromosome[2];
 		IChromosome[] parents = new IChromosome[] { parent1, parent2 };
 		int numberOfInvalidPos = 0;
-		int[] invalidCOPosition = new int[148];
+		int[] invalidCOPosition = new int[nProjects-2];
 		int numberOfHealthyChildren = 0;
 
 		for (int switchCount = 0; numberOfHealthyChildren < 2; switchCount++) {
@@ -52,19 +53,19 @@ public class Crossover implements ICrossover {
 
 	private String concatParentChromosomeOnSplitPosition(IChromosome parent1, IChromosome parent2, int randomSplit) {
 		return parent1.getChromosome().substring(0, randomSplit)
-				.concat(parent2.getChromosome().substring(randomSplit, 149));
+				.concat(parent2.getChromosome().substring(randomSplit, nProjects-1));
 	}
 
 	private int getRandomSplit(int numberOfInvalidPos, int[] invalidCOPosition) {
 		int randomSplit;
 		if (numberOfInvalidPos == 0) {
-			randomSplit = randomGenerator.nextInt(1, 148);
-		} else if (numberOfInvalidPos == 148) {
+			randomSplit = randomGenerator.nextInt(1, nProjects-2);
+		} else if (numberOfInvalidPos == nProjects-2) {
 			throw new IllegalStateException("These parents can't have valid childs... sorry.");
 		} else {
 			boolean tryAgain = false;
 			do {
-				randomSplit = randomGenerator.nextInt(1, 148);
+				randomSplit = randomGenerator.nextInt(1, nProjects-2);
 				for (int i = 0; i < numberOfInvalidPos; i++) {
 					tryAgain = (invalidCOPosition[i] == randomSplit);
 				}
@@ -80,9 +81,9 @@ public class Crossover implements ICrossover {
 		do {
 			int randomSplit1;
 			int randomSplit2;
-			randomSplit1 = randomGenerator.nextInt(1, 148);
+			randomSplit1 = randomGenerator.nextInt(1, nProjects-2);
 			do {
-				randomSplit2 = randomGenerator.nextInt(1, 148);
+				randomSplit2 = randomGenerator.nextInt(1, nProjects-2);
 			} while (randomSplit1 == randomSplit2);
 
 			int firstSplit = (randomSplit1 < randomSplit2) ? randomSplit1 : randomSplit2;
@@ -91,7 +92,7 @@ public class Crossover implements ICrossover {
 			// breed 1st child
 			IChromosome child = new Chromosome(parent1.getChromosome().substring(0, firstSplit)
 					.concat(parent2.getChromosome().substring(firstSplit, secondSplit))
-					.concat(parent1.getChromosome().substring(secondSplit, 149)));
+					.concat(parent1.getChromosome().substring(secondSplit, nProjects-1)));
 			if (child.isInPriceBudget()) {
 				children[numberOfHealthyChildren] = child;
 				numberOfHealthyChildren++;
@@ -99,7 +100,7 @@ public class Crossover implements ICrossover {
 			// breed 2nd child
 			child = new Chromosome(parent2.getChromosome().substring(0, firstSplit)
 					.concat(parent1.getChromosome().substring(firstSplit, secondSplit))
-					.concat(parent2.getChromosome().substring(secondSplit, 149)));
+					.concat(parent2.getChromosome().substring(secondSplit, nProjects-1)));
 			if (numberOfHealthyChildren < 2) {
 				if (child.isInPriceBudget()) {
 					children[numberOfHealthyChildren] = child;
@@ -124,10 +125,10 @@ public class Crossover implements ICrossover {
 
 		do {
 			int[] randomSplit = new int[k];
-			randomSplit[0] = randomGenerator.nextInt(1, 148);
+			randomSplit[0] = randomGenerator.nextInt(1, nProjects-2);
 			for (int i = 1; i < k; i++) {
 				boolean isNew = true;
-				randomSplit[i] = randomGenerator.nextInt(1, 148);
+				randomSplit[i] = randomGenerator.nextInt(1, nProjects-2);
 				for (int j = 1; j < i; j++) {
 					isNew = randomSplit[i] == randomSplit[j];
 					if (isNew) {
@@ -138,7 +139,7 @@ public class Crossover implements ICrossover {
 
 			int[] sortedSplit = Arrays.copyOf(randomSplit, k + 2);
 			sortedSplit[k] = 0;
-			sortedSplit[k + 1] = 149;
+			sortedSplit[k + 1] = nProjects-1;
 			Arrays.sort(sortedSplit);
 
 			// breed 1st child
@@ -182,8 +183,8 @@ public class Crossover implements ICrossover {
 
 		char[] caParent1 = parent1.getChromosome().toCharArray();
 		char[] caParent2 = parent2.getChromosome().toCharArray();
-		char[] caChild1 = new char[149];
-		char[] caChild2 = new char[149];
+		char[] caChild1 = new char[nProjects-1];
+		char[] caChild2 = new char[nProjects-1];
 
 		int parent1Full = (int) (1.5 * ratio);
 		int parent2Full = (int) (1.5 * ratio);
@@ -192,7 +193,7 @@ public class Crossover implements ICrossover {
 
 		int numberOfHealthyChildren = 0;
 		do {
-			for (int i = 0; i < 149; i++) {
+			for (int i = 0; i < nProjects-1; i++) {
 				int randNr = randomGenerator.nextInt(0, 100);
 
 				if (countParent1 < parent1Full && randNr <= ratio) {
