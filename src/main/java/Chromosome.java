@@ -1,102 +1,95 @@
 import Configuration.Configuration;
 import Configuration.MersenneTwisterFast;
 
-/**
- * Created by Linda on 18.01.2016.
- */
-
 public class Chromosome implements IChromosome {
-    MersenneTwisterFast randomGenerator = new MersenneTwisterFast(System.nanoTime());
+	MersenneTwisterFast randomGenerator = new MersenneTwisterFast(System.nanoTime());
 
+	private String chromosomeString;
 
-    private String chromosomeString;
+	public Chromosome(String chromosomeString) {
+		this.chromosomeString = chromosomeString;
+	}
 
-    public Chromosome(String chromosomeString){
-        this.chromosomeString = chromosomeString;
-    }
+	public Chromosome() {
+		generateRandomChromosome();
+	}
 
-    public Chromosome(){
-        generateRandomChromosome();
-    }
+	@Override
+	public IChromosome generateRandomChromosome() {
+		do {
+			this.chromosomeString = generateRandomChromosomeString();
+		} while (!this.isInPriceBudget());
+		return this;
+	}
 
-    @Override
-    public IChromosome generateRandomChromosome() {
-        do{
-            this.chromosomeString = generateRandomChromosomeString();
-        } while(!this.isInPriceBudget());
-        return this;
-    }
+	private String generateRandomChromosomeString() {
+		StringBuilder characters = new StringBuilder();
+		for (int index = 0; index < Configuration.NUMBER_OF_PROJECTS; index++) {
+			if (randomGenerator.nextInt(0, 100) < 80) {
+				characters.append(0);
+			} else {
+				characters.append(1);
+			}
 
-    private String generateRandomChromosomeString(){
-        StringBuilder characters = new StringBuilder();
-        for(int index = 0; index < Configuration.INSTANCE.NUMBER_OF_PROJECTS; index++){
-            if (randomGenerator.nextInt(0,100) < 80){
-                characters.append(0);
-            }else{
-                characters.append(1);
-            }
+		}
+		return characters.toString();
+	}
 
+	@Override
+	public String getChromosome() {
+		return chromosomeString;
 
-        }
-        return characters.toString();
-    }
+	}
 
-    @Override
-    public String getChromosome(){
-        return chromosomeString;
+	@Override
+	public boolean isInPriceBudget() {
+		if (this.getCost() >= Configuration.MAX_BUDGET) {
+			return false;
+		} else {
+			return true;
+		}
+	}
 
-    }
+	private int getCost() {
+		char[] characters = chromosomeString.toCharArray();
+		int costOfChromosome = 0;
+		for (int index = 0; index < characters.length; index++) {
+			char character = characters[index];
+			if (character == '1') {
+				costOfChromosome += Application.PROJECTS[index].getCost();
+			}
 
-    @Override
-    public boolean isInPriceBudget(){
-        if(this.getCost() >= Configuration.INSTANCE.MAX_BUDGET){
-            return false;
-        }else{
-            return true;
-        }
-    }
+		}
+		return costOfChromosome;
+	}
 
-    private int getCost() {
-        char[] characters = chromosomeString.toCharArray();
-        int costOfChromosome = 0;
-        for(int index = 0; index < characters.length; index++){
-            char character = characters[index];
-            if(character == '1'){
-                costOfChromosome += Application.PROJECTS[index].getCost();
-            }
+	@Override
+	public int getFitness() {
+		char[] characters = chromosomeString.toCharArray();
+		int fitnessOfChromosome = 0;
+		for (int index = 0; index < characters.length; index++) {
+			char character = characters[index];
+			if (character == '1') {
+				fitnessOfChromosome += Application.PROJECTS[index].getFitness();
+			}
 
-        }
-        return costOfChromosome;
-    }
+		}
 
-    @Override
-    public int getFitness(){
-        char[] characters = chromosomeString.toCharArray();
-        int fitnessOfChromosome = 0;
-        for(int index = 0; index < characters.length; index++){
-            char character = characters[index];
-            if(character == '1'){
-                fitnessOfChromosome += Application.PROJECTS[index].getFitness();
-            }
+		return fitnessOfChromosome;
 
-        }
+	}
 
-       return fitnessOfChromosome;
-
-    }
-
-    @Override
-    public int compareTo(IChromosome chromosome) {
-        int fitnessOne = this.getFitness();
-        int fitnessTwo = chromosome.getFitness();
-        if(fitnessOne<fitnessTwo){
-            return 1;
-        }else if(fitnessOne>fitnessTwo){
-            return -1;
-        }else{
-            return 0;
-        }
-    }
-
+	@Override
+	public int compareTo(IChromosome chromosome) {
+		int fitnessOne = this.getFitness();
+		int fitnessTwo = chromosome.getFitness();
+		if (fitnessOne < fitnessTwo) {
+			return 1;
+		} else if (fitnessOne > fitnessTwo) {
+			return -1;
+		} else {
+			return 0;
+		}
+	}
 
 }

@@ -1,16 +1,14 @@
-/**
- * Created by Linda on 18.01.2016.
- */
-public interface IChromosome extends  Comparable<IChromosome>{
 
-    public IChromosome generateRandomChromosome();
+public interface IChromosome extends Comparable<IChromosome> {
 
-    public String getChromosome();
+	public IChromosome generateRandomChromosome();
 
-    public boolean isInPriceBudget();
+	public String getChromosome();
 
-    public int getFitness();
+	public boolean isInPriceBudget();
 
-    public int compareTo(IChromosome chromosome);
+	public int getFitness();
+
+	public int compareTo(IChromosome chromosome);
 
 }
