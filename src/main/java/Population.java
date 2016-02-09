@@ -13,7 +13,6 @@ public class Population implements IPopulation {
 		this.population = population;
 	}
 
-	@Override
 	public IPopulation evolve() {
 		IChromosome[] topTenChromosomes = topTenPercentOfPopulation(this);
 		for (int i = 0; i < topTenChromosomes.length; i++) {
@@ -91,7 +90,6 @@ public class Population implements IPopulation {
 		return newChromosomes;
 	}
 
-	@Override
 	public IChromosome getFittest() {
 		IChromosome fittest = null;
 		for (IChromosome chromosome : this.population) {
@@ -103,17 +101,14 @@ public class Population implements IPopulation {
 		return fittest;
 	}
 
-	@Override
 	public IChromosome[] getPopulation() {
 		return population;
 	}
 
-	@Override
 	public void setPopulation(IChromosome[] chromosomeArray) {
 		this.population = chromosomeArray;
 	}
 
-	@Override
 	public int getSumPopulationFitness() {
 
 		int sumFitness = 0;
@@ -123,13 +118,11 @@ public class Population implements IPopulation {
 		return sumFitness;
 	}
 
-	@Override
 	public IPopulation sortPopulation() {
 		Arrays.sort(population);
 		return this;
 	}
 
-	@Override
 	public IChromosome getLastChromosomeOfPopulation() {
 		return this.getPopulation()[this.getPopulation().length - 1];
 	}

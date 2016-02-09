@@ -11,17 +11,14 @@ public class Project implements IProject {
 		this.number = number;
 	}
 
-	@Override
 	public int getCost() {
 		return this.cost;
 	}
 
-	@Override
 	public int getFitness() {
 		return this.fitness;
 	}
 
-	@Override
 	public int getNumber() {
 		return this.number;
 	}

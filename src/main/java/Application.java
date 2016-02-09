@@ -33,19 +33,27 @@ public class Application {
 
 	private void evolvePopulation(IPopulation population) {
 		int evolved = 0;
-		System.currentTimeMillis();
+		long currentTimeMillis = System.currentTimeMillis();
 		while (true) {
 			evolved++;
 			population = population.evolve();
-			reportFittestChromosome(evolved, population);
+			reportFittestChromosome(evolved, population, currentTimeMillis);
 		}
 	}
 
-	private void reportFittestChromosome(int evolved, IPopulation evolvedPopulation) {
+	private int getTimeInSeconds(long pastTime) {
+		return  Math.round(pastTime / 1000);
+	}
+
+	private long getPastTime(long currentTimeMillis) {
+		return System.currentTimeMillis() - currentTimeMillis;
+	}
+
+	private void reportFittestChromosome(int evolved, IPopulation evolvedPopulation, long currentTimeMillis) {
 		int fitnessOfFittestChromosomeFromPopulation = evolvedPopulation.getFittest().getFitness();
 		if (fitnessOfFittestChromosome < fitnessOfFittestChromosomeFromPopulation) {
 			fitnessOfFittestChromosome = fitnessOfFittestChromosomeFromPopulation;
-			System.out.println("NEW FITNESS: " + fitnessOfFittestChromosome + " GENERATION: " + evolved);
+			System.out.println("NEW FITNESS: " + fitnessOfFittestChromosome + " GENERATION: " + evolved + " Vergangene Zeit in s: " + getTimeInSeconds(getPastTime(currentTimeMillis)));
 		} else if (fitnessOfFittestChromosome == fitnessOfFittestChromosomeFromPopulation) {
 			// System.out.println("");
 		} else {
@@ -64,6 +72,8 @@ public class Application {
 
 			br = new BufferedReader(new FileReader(csvFile));
 			int index = 0;
+			int maxFitness = 0;
+			int maxCost = 0;
 			while ((line = br.readLine()) != null) {
 
 				// use semicolon as separator
@@ -75,9 +85,10 @@ public class Application {
 				System.out.println(tempProject.toString());
 
 				PROJECTS[index] = tempProject;
+				maxFitness+=tempProject.getFitness();
+				maxCost += tempProject.getCost();
 				index++;
 			}
-
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

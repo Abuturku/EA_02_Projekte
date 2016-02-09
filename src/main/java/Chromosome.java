@@ -14,7 +14,6 @@ public class Chromosome implements IChromosome {
 		generateRandomChromosome();
 	}
 
-	@Override
 	public IChromosome generateRandomChromosome() {
 		do {
 			this.chromosomeString = generateRandomChromosomeString();
@@ -35,13 +34,11 @@ public class Chromosome implements IChromosome {
 		return characters.toString();
 	}
 
-	@Override
 	public String getChromosome() {
 		return chromosomeString;
 
 	}
 
-	@Override
 	public boolean isInPriceBudget() {
 		if (this.getCost() >= Configuration.MAX_BUDGET) {
 			return false;
@@ -63,7 +60,6 @@ public class Chromosome implements IChromosome {
 		return costOfChromosome;
 	}
 
-	@Override
 	public int getFitness() {
 		char[] characters = chromosomeString.toCharArray();
 		int fitnessOfChromosome = 0;
@@ -79,7 +75,6 @@ public class Chromosome implements IChromosome {
 
 	}
 
-	@Override
 	public int compareTo(IChromosome chromosome) {
 		int fitnessOne = this.getFitness();
 		int fitnessTwo = chromosome.getFitness();

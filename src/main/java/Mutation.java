@@ -6,28 +6,24 @@ import static Configuration.MutationEnum.*;
 public class Mutation implements IMutation {
 	MersenneTwisterFast randomGenerator = new MersenneTwisterFast(System.nanoTime());
 
-	@Override
 	public IChromosome doMutation(IChromosome chromosome) {
 		if (randomGenerator.nextFloat() <= Configuration.MUTATION_RATIO) {
-			if (Configuration.MUTATION_TYPE.equals(DISPLACEMENT)) {
-				// System.out.println("Mutation: DISPLACEMENT");
-				return doMutationDisplacement(chromosome);
-			} else if (Configuration.MUTATION_TYPE.equals(EXCHANGE)) {
-				// System.out.println("Mutation: EXCHANGE");
-				return doMutationExchange(chromosome);
-			} else if (Configuration.MUTATION_TYPE.equals(INSERTION)) {
-				// System.out.println("Mutation: INSERTION");
-				return doMutationInsertion(chromosome);
-			} else if (Configuration.MUTATION_TYPE.equals(INVERSION)) {
-				// System.out.println("Mutation: INVERSION");
-				return doMutationInversion(chromosome);
-			} else if (Configuration.MUTATION_TYPE.equals(SCRAMBLE)) {
-				// System.out.println("Mutation: SCRAMBLE");
-				return doMutationScramble(chromosome);
+			switch (Configuration.MUTATION_TYPE){
+				case DISPLACEMENT:
+					return doMutationDisplacement(chromosome);
+				case EXCHANGE:
+					return doMutationExchange(chromosome);
+				case INSERTION:
+					return doMutationInsertion(chromosome);
+				case INVERSION:
+					return doMutationInversion(chromosome);
+				case SCRAMBLE:
+					return doMutationScramble(chromosome);
+				default:
+					System.out.println("Incorrect ENUM Type");
+					return chromosome;
 			}
 
-			System.out.println("Incorrect ENUM Type");
-			return chromosome;
 		} else {
 			return chromosome;
 		}
