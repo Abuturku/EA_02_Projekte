@@ -134,11 +134,13 @@ public class Crossover implements ICrossover {
 					//parent1 is chosen
 					caChild1[i] = caParent1[i];
 					caChild2[i] = caParent2[i];
+					countParent1++;
 				}
 				else if (takeParent2) {
 					//parent2 is chosen
 					caChild1[i] = caParent2[i];
 					caChild2[i] = caParent1[i];
+					countParent2++;
 				}
 			}
 			IChromosome child = new Chromosome(String.valueOf(caChild1));
@@ -157,7 +159,7 @@ public class Crossover implements ICrossover {
 	private float getValidMixingRatio() {
 		float ratio = 100 * Configuration.MIXING_RATIO; // in Prozent
 		if (ratio <= 0 || ratio >= 100) {
-			throw new IllegalArgumentException("The mixing ratio has to be a value between 0 and 1.");
+			throw new IllegalArgumentException("The mixing ratio in Config has to be a value between 0 and 1.");
 		}
 		return ratio;
 	}
