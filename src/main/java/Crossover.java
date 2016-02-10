@@ -119,29 +119,38 @@ public class Crossover implements ICrossover {
 		do {
 			for (int i = 0; i < nProjects-1; i++) {
 				int randNr = randomGenerator.nextInt(0, 100);
-				boolean takeParent1 = randNr <= mixingRatio;
-				boolean takeParent2 = randNr > mixingRatio;
-				if(takeParent2 && countParent2 >= parent2Full){ //parent2 is full
-					takeParent1 = true;
-					takeParent2 = false;
-				}
-				if(takeParent1 && countParent1 >= parent1Full){ //parent1 is full
-					takeParent2 = true;
-					takeParent1 = false;
-				}
 
-				if (takeParent1) {
-					//parent1 is chosen
-					caChild1[i] = caParent1[i];
-					caChild2[i] = caParent2[i];
-					countParent1++;
+				if(countParent1 >= parent1Full){//if maximal part of parent1 is reached
+                    for (int j = i; j < nProjects-1; j++) {
+                        //parent2 is chosen
+                        caChild1[i] = caParent2[i];
+                        caChild2[i] = caParent1[i];
+                    }
+                    break;
 				}
-				else if (takeParent2) {
-					//parent2 is chosen
-					caChild1[i] = caParent2[i];
-					caChild2[i] = caParent1[i];
-					countParent2++;
-				}
+                if(countParent2 >= parent2Full){//if maximal part of parent2 is reached
+                    for (int j = i; j < nProjects-1; j++) {
+                        //parent1 is chosen
+                        caChild1[i] = caParent1[i];
+                        caChild2[i] = caParent2[i];
+                    }
+                    break;
+                }
+                else{
+                    if (randNr < mixingRatio) {
+                        //parent1 is chosen
+                        caChild1[i] = caParent1[i];
+                        caChild2[i] = caParent2[i];
+                        countParent1++;
+                    }
+                    else {
+                        //parent2 is chosen
+                        caChild1[i] = caParent2[i];
+                        caChild2[i] = caParent1[i];
+                        countParent2++;
+                    }
+
+                }
 			}
 			IChromosome child = new Chromosome(String.valueOf(caChild1));
 			numberOfHealthyChildren = addChildIfPosible(children, numberOfHealthyChildren, child);
