@@ -35,7 +35,7 @@ public class Application {
 	private void evolvePopulation(IPopulation population) {
 		int evolved = 0;
 		long currentTimeMillis = System.currentTimeMillis();
-		for (int i = 0; i < Configuration.MAX_POPULATION; i++) {
+		for (int i = 0; i < Configuration.MAX_GENERATION; i++) {
 			evolved++;
 			population = population.evolve();
 			reportFittestChromosome(evolved, population, currentTimeMillis);
