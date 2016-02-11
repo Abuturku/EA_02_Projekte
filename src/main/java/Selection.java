@@ -56,8 +56,8 @@ public class Selection implements ISelection {
 	}
 
 	private Population getMotherPartOfPopulation(IPopulation population) {
-		return new Population(Arrays.copyOfRange(population.getPopulation(), population.getPopulation().length / 2 + 1,
-				population.getPopulation().length - 1));
+		return new Population(Arrays.copyOfRange(population.getPopulation(), population.getPopulation().length / 2,
+				population.getPopulation().length));
 	}
 
 	private Population getFatherPartOfPopulation(IPopulation population) {

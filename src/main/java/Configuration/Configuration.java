@@ -9,9 +9,10 @@ public enum Configuration {
 	public final static MutationEnum MUTATION_TYPE = MutationEnum.SCRAMBLE;
 	public final static SelectionEnum SELECTION_TYPE = SelectionEnum.ROULETTE_WHEEL;
 	public final static double MUTATION_RATIO = 0.0005;
-	public final static int POPULATION_SIZE = 88;
+	public static int POPULATION_SIZE = 27;
 	public final static int MAX_BUDGET = 1500;
 	public final static int NUMBER_OF_PROJECTS = 150;
-	public final static int SIZE_OF_POPULATION_TO_FIND_PARENTS = 10;
+	public final static int SIZE_OF_POPULATION_TO_FIND_PARENTS = 8;
+	public final static int MAX_POPULATION = 35000;
 	// 529 bis jetzt max fitness
 }

@@ -19,23 +19,26 @@ public class Population implements IPopulation {
 			evolvedChromosome[i] = topTenChromosomes[i];
 		}
 
-		for (int j = getTenPercentOfTheLengthOfPopulation(); j < Configuration.POPULATION_SIZE; j += Configuration.SIZE_OF_POPULATION_TO_FIND_PARENTS) {
+		for (int j = getTenPercentOfTheLengthOfPopulation(); j <= Configuration.POPULATION_SIZE; j += Configuration.SIZE_OF_POPULATION_TO_FIND_PARENTS) {
 			IPopulation partOfPopulationForOneParentPair = getPartOfPopulationForOneParentPair(j);
+			IChromosome[] newChromosomes;
+			if(partOfPopulationForOneParentPair.getPopulation().length >= 4) {
+				IChromosome[] parents = getParentsFromSelection(partOfPopulationForOneParentPair);
 
-			IChromosome[] parents = getParentsFromSelection(partOfPopulationForOneParentPair);
+				IChromosome[] children = getChildrenFromCrossoverTheParents(parents);
 
-			IChromosome[] children = getChildrenFromCrossoverTheParents(parents);
+				children[0] = mutateMaybeTheChromosome(children[0]);
+				children[1] = mutateMaybeTheChromosome(children[1]);
 
-			children[0] = mutateMaybeTheChromosome(children[0]);
-			children[1] = mutateMaybeTheChromosome(children[1]);
+				newChromosomes = killTheBadHalfOfChromosomes(
+						partOfPopulationForOneParentPair.getPopulation());
+				newChromosomes = refillChromosomeArrayWithRandomChromosomes(newChromosomes);
 
-			IChromosome[] newChromosomes = killTheBadHalfOfChromosomes(
-					partOfPopulationForOneParentPair.getPopulation());
-			newChromosomes = refillChromosomeArrayWithRandomChromosomes(newChromosomes);
-
-			newChromosomes[newChromosomes.length - 2] = children[0];
-			newChromosomes[newChromosomes.length - 1] = children[1];
-
+				newChromosomes[newChromosomes.length - 2] = children[0];
+				newChromosomes[newChromosomes.length - 1] = children[1];
+			}else{
+				newChromosomes = partOfPopulationForOneParentPair.getPopulation();
+			}
 			// System.out.println("Laenge vorher: "+
 			// newPop.getPopulation().length +" | Laenge nachher: " +
 			// newChromosomes.length);
@@ -48,7 +51,11 @@ public class Population implements IPopulation {
 	}
 
 	private int getTenPercentOfTheLengthOfPopulation() {
-		return getPopulation().length / 10;
+		int tenPercent = getPopulation().length / 10;
+		if((getPopulation().length-tenPercent)%2==1){
+			tenPercent++;
+		}
+		return tenPercent;
 	}
 
 	private IChromosome mutateMaybeTheChromosome(IChromosome children) {
@@ -71,11 +78,22 @@ public class Population implements IPopulation {
 	}
 
 	private IPopulation getPartOfPopulationForOneParentPair(int j) {
+		int sizeOfPopulation;
+		if(getRestSizeOfPopulation(j) >= Configuration.SIZE_OF_POPULATION_TO_FIND_PARENTS ){
+			sizeOfPopulation = Configuration.SIZE_OF_POPULATION_TO_FIND_PARENTS;
+		}else{
+			sizeOfPopulation = getRestSizeOfPopulation(j);
+		}
 		IPopulation partOfPopulationForOneParentPair = new Population(
-				new Chromosome[Configuration.SIZE_OF_POPULATION_TO_FIND_PARENTS]);
+				new Chromosome[sizeOfPopulation]);
 		partOfPopulationForOneParentPair.setPopulation(
-				Arrays.copyOfRange(this.getPopulation(), j, j + Configuration.SIZE_OF_POPULATION_TO_FIND_PARENTS));
+				Arrays.copyOfRange(this.getPopulation(), j, j + sizeOfPopulation));
 		return partOfPopulationForOneParentPair;
+	}
+
+	private int getRestSizeOfPopulation(int j) {
+		int restSizeOfPopulation = Configuration.POPULATION_SIZE- j;
+		return restSizeOfPopulation;
 	}
 
 	private IChromosome[] killTheBadHalfOfChromosomes(IChromosome[] chromosomes) {

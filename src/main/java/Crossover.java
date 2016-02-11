@@ -11,10 +11,10 @@ public class Crossover implements ICrossover {
 		IChromosome[] children = new IChromosome[2];
 		switch (Configuration.CROSSOVER_TYPE) {
 		case ONE_POINT:
-			children = doOnePointCrossover(parent1, parent2);
+			children = doKPointCrossover(parent1, parent2, 1);
 			break;
 		case TWO_POINT:
-			children = doTwoPointCrossover(parent1, parent2);
+			children = doKPointCrossover(parent1, parent2, 2);
 			break;
 		case K_POINT:
 			children = doKPointCrossover(parent1, parent2, Configuration.K_FOR_CROSS_OVER);
@@ -73,11 +73,6 @@ public class Crossover implements ICrossover {
 	}
 
 	private IChromosome[] doKPointCrossover(IChromosome parent1, IChromosome parent2, int kForCrossOver) {
-		/**if (k < 3) {
-			throw new IllegalArgumentException("Please use ONE_POINT for k=1 or TWO_POINT for k=2. "
-					+ "kPoint works only for values grater than 2.");
-		}**/
-
 		IChromosome[] children = new IChromosome[2];
 		int numberOfHealthyChildren = 0;
 

@@ -10,15 +10,16 @@ public class Application {
 	private int fitnessOfFittestChromosome = 0;
 
 	public static void main(String[] args) {
-
 		new Application();
-
 	}
 
 	public Application() {
-
 		loadProjectsFromCSV("././data/projectData.csv");
-
+		evolvePopulation(generatePopulation());
+	}
+	public Application(int populationSize) {
+		Configuration.POPULATION_SIZE = populationSize;
+		loadProjectsFromCSV("././data/projectData.csv");
 		evolvePopulation(generatePopulation());
 	}
 
@@ -34,7 +35,7 @@ public class Application {
 	private void evolvePopulation(IPopulation population) {
 		int evolved = 0;
 		long currentTimeMillis = System.currentTimeMillis();
-		while (true) {
+		for (int i = 0; i < Configuration.MAX_POPULATION; i++) {
 			evolved++;
 			population = population.evolve();
 			reportFittestChromosome(evolved, population, currentTimeMillis);
@@ -72,8 +73,6 @@ public class Application {
 
 			br = new BufferedReader(new FileReader(csvFile));
 			int index = 0;
-			int maxFitness = 0;
-			int maxCost = 0;
 			while ((line = br.readLine()) != null) {
 
 				// use semicolon as separator
@@ -85,8 +84,6 @@ public class Application {
 				System.out.println(tempProject.toString());
 
 				PROJECTS[index] = tempProject;
-				maxFitness+=tempProject.getFitness();
-				maxCost += tempProject.getCost();
 				index++;
 			}
 		} catch (FileNotFoundException e) {
